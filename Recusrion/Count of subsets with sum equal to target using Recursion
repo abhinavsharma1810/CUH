@@ -1,0 +1,61 @@
+// A C++ program to count the number of subsets with a
+// sum equal to a target using recursion
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to recursively count subsets with a given sum
+// Parameters:
+// - i: Current index in the array
+// - currentSum: Sum of the current subset being considered
+// - target: Target sum for the subsets
+// - arr: Input array of integers
+int countSubsets(int i, int currentSum, int target, vector<int> &arr) {
+  
+    int n = arr.size();
+
+    // Base case: If we've processed all elements 
+  	// in the array
+    if (i == n) {
+      
+        // Return 1 if the current subset's
+        // sum equals the target, else return 0
+        return (currentSum == target);
+    }
+
+    // Case 1: Exclude the current element from the subset
+    // and move to the next element
+    int exclude = countSubsets(i + 1, currentSum, target, arr);
+
+    // Case 2: Include the current element in the subset
+    int include = 0;
+
+    // Only include the current element if adding it 
+    // does not exceed the target sum
+    if ((arr[i] + currentSum) <= target) {
+        include = countSubsets(i + 1, currentSum + arr[i], target, arr);
+    }
+
+    // Return the total count of subsets by 
+  	// summing both cases
+    return (include + exclude);
+}
+
+// Function to initiate the recursive subset count
+// Parameters:
+// - arr: Input array of integers
+// - target: Target sum for the subsets
+int perfectSum(vector<int> &arr, int target) {
+  
+    // Start the recursion from the first element 
+    // with a current sum of 0
+    return countSubsets(0, 0, target, arr);
+}
+
+int main() {
+
+    vector<int> arr = {1, 2, 3, 3};
+    int target = 6;
+    cout << perfectSum(arr, target);
+
+    return 0;
+}
